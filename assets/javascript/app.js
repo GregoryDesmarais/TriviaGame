@@ -50,7 +50,7 @@ var answers = ["A", "C", "D", "C", "D"];
 $(function () {
     for (x in questions) {
         var qDisplay = $("<div>");
-        var question = questions[x].question; 
+        var question = questions[x].question;
         var choices = questions[x].choices;
         var q = $("<h3>");
         q.html(question);
@@ -58,34 +58,44 @@ $(function () {
         $(".questions").append(qDisplay);
         for (y in choices) {
             var option = $("<div>").addClass("col-md-3 my-2");
-            option.html("<input type='radio' name='"+x+"' id='"+x+y+"' value='"+y+"'><label for='"+x+y+"'> "+choices[y]+"</label>");
+            option.html("<input type='radio' name='" + x + "' id='" + x + y + "' value='" + y + "'><label for='" + x + y + "'> " + choices[y] + "</label>");
             qDisplay.append(option);
         }
     }
 
-    $("#timer").text("01:30");
-    var timer = setTimeout(checkAnswers,90000);
-    function checkAnswers()
-    {
-        
+    function startTimer() {
+        var playTime = setInterval(count, 1000)
+    }
+
+    startTimer();
+    function count() {
+        time--;
+        $("#timer").text(timeConverter(time));
+    }
+    function checkAnswers() {
+        alert("Time's up!");
+        stopTimer();
     }
     function timeConverter(t) {
 
         var minutes = Math.floor(t / 60);
         var seconds = t - (minutes * 60);
-      
+
         if (seconds < 10) {
-          seconds = "0" + seconds;
+            seconds = "0" + seconds;
         }
-      
+
         if (minutes === 0) {
-          minutes = "00";
+            minutes = "00";
         }
         else if (minutes < 10) {
-          minutes = "0" + minutes;
+            minutes = "0" + minutes;
         }
-      
+
         return minutes + ":" + seconds;
-      }
-      
+    }
+    var time = 15;
+    $("#timer").text(timeConverter(time));
+    var timer = setTimeout(checkAnswers, 1000 * time);
+
 });
