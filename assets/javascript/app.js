@@ -43,6 +43,24 @@ var questions = {
             C: "Hollywood Squares",
             D: "Let's Make a Deal!"
         }
+    },
+    q6: {
+        question: "In this game from Nickelodeon, pairs of children answer trivia and complete challenges in order to explore a temple for prizes!",
+        choices: {
+            A: "Looting the Hidden Temple",
+            B: "Legends of the Hidden Temple",
+            C: "The Shrine of the Silver Monkey",
+            D: "This show did not exist"
+        }
+    },
+    q7: {
+        question: "In this classic game show, two players would bet how many notes to guess the correct song title.",
+        choices: {
+            A: "Betting Tunes",
+            B: "Name that Song",
+            C: "Name that Tune",
+            D: "Guess this!"
+        }
     }
 }
 var correctAnswers = {
@@ -50,8 +68,12 @@ var correctAnswers = {
     q2: "C",
     q3: "D",
     q4: "C",
-    q5: "D"
+    q5: "D",
+    q6: "B",
+    q7: "C"
 };
+
+
 $(function() {
     for (x in questions) {
         var qDisplay = $("<div>");
@@ -133,7 +155,7 @@ $(function() {
 
         return minutes + ":" + seconds;
     }
-    var time = 9000;
+    var time = 60;
     $("#timer").text(timeConverter(time));
     var timer = setTimeout(checkAnswers, 1000 * time);
     $(".done").click(checkAnswers);
