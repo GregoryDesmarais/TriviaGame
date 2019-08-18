@@ -45,37 +45,77 @@ var questions = {
         }
     }
 }
-var answers = ["A", "C", "D", "C", "D"];
-
-$(function () {
+var correctAnswers = {
+    q1: "A",
+    q2: "C",
+    q3: "D",
+    q4: "C",
+    q5: "D"
+};
+$(function() {
     for (x in questions) {
         var qDisplay = $("<div>");
         var question = questions[x].question;
         var choices = questions[x].choices;
-        var q = $("<h3>");
+        var q = $("<h4>");
         q.html(question);
-        qDisplay.addClass("row text-center").html(q);
-        $(".questions").append(qDisplay);
+        qDisplay.addClass("col-md-12 my-3").html(q);
+        var answers = $("<div>").addClass("row");
+        $(".questions").append(qDisplay).append(answers);
         for (y in choices) {
-            var option = $("<div>").addClass("col-md-3 my-2");
+            var option = $("<div>").addClass("col-md-3 my-1 answer");
             option.html("<input type='radio' name='" + x + "' id='" + x + y + "' value='" + y + "'><label for='" + x + y + "'> " + choices[y] + "</label>");
-            qDisplay.append(option);
+            answers.append(option);
         }
     }
+    var playTime = "";
+    var correctCount = 0;
+    var wrongCount = 0;
+    var unAnswered = 0;
 
     function startTimer() {
-        var playTime = setInterval(count, 1000)
+        playTime = setInterval(count, 1000)
     }
 
+    function stopTimer() {
+        clearInterval(playTime);
+    }
     startTimer();
+
     function count() {
         time--;
         $("#timer").text(timeConverter(time));
     }
+
     function checkAnswers() {
-        alert("Time's up!");
+
         stopTimer();
+        for (x in questions) {
+            console.log(x);
+            var test = $("input[name='" + x + "']:checked");
+            if (test.length > 0) {
+                if (test.val() === correctAnswers[x]) {
+                    console.log(test.val() + " | " + correctAnswers[x]);
+                    correctCount++;
+                } else {
+                    console.log(test.val() + " | " + correctAnswers[x]);
+                    wrongCount++;
+                }
+            } else {
+                console.log(test.val() + " | " + correctAnswers[x]);
+                unAnswered++;
+            }
+        }
+        var correct = $("<h3>");
+        correct.html("Correct Answers: " + correctCount);
+        var wrong = $("<h3>");
+        wrong.html("Incorrect Answers: " + wrongCount);
+        var empty = $("<h3>");
+        empty.html("Unanswered: " + unAnswered);
+        $(".questions").empty().append(correct).append(wrong).append(empty);
+        $(".done").hide();
     }
+
     function timeConverter(t) {
 
         var minutes = Math.floor(t / 60);
@@ -87,15 +127,15 @@ $(function () {
 
         if (minutes === 0) {
             minutes = "00";
-        }
-        else if (minutes < 10) {
+        } else if (minutes < 10) {
             minutes = "0" + minutes;
         }
 
         return minutes + ":" + seconds;
     }
-    var time = 15;
+    var time = 9000;
     $("#timer").text(timeConverter(time));
     var timer = setTimeout(checkAnswers, 1000 * time);
+    $(".done").click(checkAnswers);
 
 });
